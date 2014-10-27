@@ -18,5 +18,23 @@
 		charset="utf-8"></script>
 <body>
 
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	    <div class="navbar-inner">
+	    	<div class="col-lg-1"></div>
+		    <div class="col-lg-4">
+		    	<h4 style="color:white"> Welcome ${ Username } </h4>
+		    </div>
+		    <div class="col-lg-2"></div>
+	     	<div class="col-lg-4">
+		    	<h4 class="text-right" style="color:white" > Logged in as ${ Rolename } </h4>
+		    </div>
+		    <div class="col-lg-1"></div>
+	    
+	    </div>
+	    
+	    
+	    
+	</div>
+	
 </body>
 </html>

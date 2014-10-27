@@ -50,6 +50,7 @@ public class LoginController extends HttpServlet {
 			Users users = new Users();
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
+			String Rolename;
 			users.setUserName(username);
 			users.setPassword(password);
 			int role = userMan.validateLogin(users);
@@ -62,7 +63,13 @@ public class LoginController extends HttpServlet {
 				rd.forward(request, response);
 				return;
 			} else {
-				request.setAttribute("success", role);
+				
+				request.setAttribute("Username", username);
+				if(role==0)
+					request.setAttribute("Rolename","Student");
+				else
+					request.setAttribute("Rolename","Professor");
+				
 				RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
 				rd.forward(request, response);
 				return;
