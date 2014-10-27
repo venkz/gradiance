@@ -20,10 +20,10 @@ public class DBConnector {
 		try{
 			if(con == null) {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
-				String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
-				String user = "system";
-		        String password = "root";
-		        String schemaName = "csc540";
+				String url = "jdbc:oracle:thin:@ora.CSC.ncsu.edu:1521:orcl";
+				String user = "vkara";
+		        String password = "200023607";
+		        String schemaName = "CSC540";
 				con = DriverManager.getConnection(url, user,password);
 				return con;
 			} else {
