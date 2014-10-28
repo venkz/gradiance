@@ -8,9 +8,20 @@
 		<servlet-name>LoginController</servlet-name>
 		<servlet-class>ncsu.csc.db.controllers.LoginController</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>UserContoller</display-name>
+		<servlet-name>UserContoller</servlet-name>
+		<servlet-class>ncsu.csc.db.controllers.UserContoller</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>LoginController</servlet-name>
 		<url-pattern>/LoginController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UserContoller</servlet-name>
+		<url-pattern>/UserContoller</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

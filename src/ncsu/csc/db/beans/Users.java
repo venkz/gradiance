@@ -7,7 +7,10 @@ public class Users {
 	private String password;
 	private int role;
 	private String email;
-	private String name;
+	private String fname;
+	private String lname;
+	private int degree;
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -38,12 +41,25 @@ public class Users {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getName() {
-		return name;
+	public String getFname() {
+		return fname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+	public int getDegree() {
+		return degree;
+	}
+	public void setDegree(int degree) {
+		this.degree = degree;
+	}
+
 	
 	
 }
