@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.Users;
@@ -67,7 +68,8 @@ public class UserContoller extends HttpServlet {
 			else if(method.equalsIgnoreCase("addTA")) {
 				Enrollments enrollments = new Enrollments();
 				if(request.getParameter("username") == null) {
-					enrollments.setUsername(request.getParameter("username"));
+					HttpSession session = request.getSession(false);
+					enrollments.setUsername(session.getAttribute("Session_UserName").toString());
 				} else {
 					enrollments.setUsername(request.getParameter("username"));
 				}
