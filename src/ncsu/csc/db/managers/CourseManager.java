@@ -18,7 +18,7 @@ Connection con;
 		con = DBConnector.dbConnect();
 	}
 	
-	public ArrayList<Enrollments> GetCourseList(String username) throws SQLException
+	public ArrayList<Enrollments> GetCourseList(String username, int role) throws SQLException
 	{
 		ArrayList<Enrollments> arr_enroll=new ArrayList<Enrollments>();
 		Enrollments enr;	
@@ -34,17 +34,26 @@ Connection con;
 		ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
 		
 		// ***********************************************************
-		
-		while(rs.next()!=false){
-			enr=new Enrollments();
-			if(rs.getInt("ta")==1)
-				enr.setIstaStr("TA");
-			else
-				enr.setIstaStr("Student");
-			enr.setToken(rs.getString("token"));
-			enr.setCoursename(rs.getString("coursename"));
-			arr_enroll.add(enr);
+		if(role == 0) {
+			while(rs.next()){
+				enr=new Enrollments();
+				if(rs.getInt("ta")==1)
+					enr.setIstaStr("TA");
+				else
+					enr.setIstaStr("Student");
+				enr.setToken(rs.getString("token"));
+				enr.setCoursename(rs.getString("coursename"));
+				arr_enroll.add(enr);
+			}
+		} else {
+			while(rs.next()){
+				enr=new Enrollments();
+				enr.setToken(rs.getString("token"));
+				enr.setCoursename(rs.getString("coursename"));
+				arr_enroll.add(enr);
+			}
 		}
+		
 
 		return arr_enroll;
 	}

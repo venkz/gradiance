@@ -22,19 +22,21 @@
 	    
 	    <div class="navbar-inner" >
 		    <div class="col-lg-6">
+		    <% if(request.getRequestURI().contains("Login")) {%>
+		    </div>
+		    <%} else {%>
 		    	<%request.getSession(false);%>
-		    	<h4 style="color:white"><b> Welcome <%=session.getAttribute("Session_UserName")%> </b></h4>
+		    		<h4 style="color:white"><b> Welcome <%=session.getAttribute("Session_UserName")%> </b></h4>
 		    </div>
 	     	<div class="col-lg-6">
-	     	<%if(Integer.parseInt(session.getAttribute("Session_UserRole").toString())==0){ %>
-	     		<h4 class="text-right" style="color:white" ><b> Logged in as Student </b></h4>
-	     	<% }else{%>
-	     		<h4 class="text-right" style="color:white" ><b> Logged in as Professor </b></h4>
-	     	<%} %>
-	     	
-		    </div>
+	     		<%if(Integer.parseInt(session.getAttribute("Session_UserRole").toString())==0){ %>
+	     			<h4 class="text-right" style="color:white" ><b> Logged in as Student </b></h4>
+	     		<% }else{%>
+	     			<h4 class="text-right" style="color:white" ><b> Logged in as Professor </b></h4>
+	     		<%} %>
+	     	</div>
+		    <%} %>
 	    </div>
-
 	</div>
 	<br><br><br><br>
 	

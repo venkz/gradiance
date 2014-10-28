@@ -66,29 +66,23 @@ public class LoginController extends HttpServlet {
 				
 				HttpSession session = request.getSession();
 				request.setAttribute("Username", username);
-				
+				session.setAttribute("Session_UserName", username);
+				session.setAttribute("Session_UserRole", role);
+				CourseManager cm=new CourseManager();
+				request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString(), role));
 				if(role==0)
 				{
-					session.setAttribute("Session_UserName", username);
-					session.setAttribute("Session_UserRole", role);
 					request.setAttribute("Rolename","Student");
-					CourseManager cm=new CourseManager();
-					request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString()));
-				}
-				else {
-					request.setAttribute("Rolename","Professor");
-					session.setAttribute("Session_UserRole", role);
-				}
-				if(role == 0) {
 					RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
 					rd.forward(request, response);
 					return;
-				} else {
+				}
+				else {
+					request.setAttribute("Rolename","Professor");
 					RequestDispatcher rd = request.getRequestDispatcher("CreateUser.jsp");
 					rd.forward(request, response);
 					return;	
 				}
-				
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

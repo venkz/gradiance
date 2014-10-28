@@ -17,7 +17,7 @@
 						<%ArrayList<Enrollments> course_arr=(ArrayList)request.getAttribute("CourseList");%>
 							<%for(Enrollments e:course_arr){%>
 								<div class="row">
-									<div class="col-md-4"><%=e.getToken()%></div>
+									<div class="col-md-4"><a href="#"><%=e.getToken()%></a></div>
 									<div class="col-md-4"><%=e.getCoursename()%></div>
 									<div class="col-md-4"><%=e.getIstaStr()%></div>
 								</div>

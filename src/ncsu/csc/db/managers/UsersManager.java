@@ -7,11 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import oracle.jdbc.OracleCallableStatement;
-import oracle.jdbc.driver.OracleTypes;
 import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.Users;
 import ncsu.csc.db.models.DBConnector;
+import oracle.jdbc.OracleCallableStatement;
 
 
 public class UsersManager {

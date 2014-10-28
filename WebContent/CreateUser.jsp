@@ -1,7 +1,26 @@
 <jsp:include page="Layout.jsp"></jsp:include>
+<%@page import="ncsu.csc.db.beans.Enrollments"%>
+<%@page import="java.util.*"%>
 <body>
 
 	<div class="row">
+	<div class="col-lg-6">
+			<div class="panel panel-default col-md-offset-1">
+				<div class="panel-heading center">
+					<h3 class="panel-title">Available Courses</h3>
+				</div>
+				
+				<div class="panel-body">
+					<%ArrayList<Enrollments> course_arr = (ArrayList) request.getAttribute("CourseList");%>
+					<%for (Enrollments e : course_arr) {%>
+					<div class="row">
+						<div class="col-md-4"><a href="#"><%=e.getToken()%></a></div>
+						<div class="col-md-4"><%=e.getCoursename()%></div>
+					</div><br>
+					<%}	%>
+				</div>
+			</div>
+		</div>
 		<div class="col-lg-6">
 			<div class="col-md-6 col-md-offset-2">
 				<div class="panel panel-default">
@@ -76,18 +95,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-6">
-			<div class="row">
-				<div class="col-md-3"><a href="#" class="btn btn-lg btn-info">sample<br>test</a></div>
-				<div class="col-md-3">item 2</div>
-				<div class="col-md-3">item 3</div>
-				<div class="col-md-3">item 4</div>
-				<div class="col-md-3">item 5</div>
-				<div class="col-md-3">item 6</div>
-				<div class="col-md-3">item 7</div>
-			</div>
-		</div>
 	</div>
-
 </body>
 </html>

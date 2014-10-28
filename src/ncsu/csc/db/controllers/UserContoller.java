@@ -33,7 +33,7 @@ public class UserContoller extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 	}
 
 	/**
@@ -86,10 +86,10 @@ public class UserContoller extends HttpServlet {
 				}
 				
 				int created = userMan.enrollUser(enrollments);
+				CourseManager cm=new CourseManager();
+				request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString(), isUser));
 				if(created > 0) {
 					if(isUser == 0) {
-						CourseManager cm=new CourseManager();
-						request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString()));
 						RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
 						rd.forward(request, response);
 					}
