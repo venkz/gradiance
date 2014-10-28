@@ -3,14 +3,20 @@ package ncsu.csc.db.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Session;
+
+import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.Users;
+import ncsu.csc.db.managers.CourseManager;
 import ncsu.csc.db.managers.UsersManager;
 
 /**
@@ -64,9 +70,16 @@ public class LoginController extends HttpServlet {
 				return;
 			} else {
 				
+				HttpSession session = request.getSession();
 				request.setAttribute("Username", username);
+				
 				if(role==0)
+				{
+					session.setAttribute("Session_UserName", username);
 					request.setAttribute("Rolename","Student");
+					CourseManager cm=new CourseManager();
+					request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString()));
+				}
 				else
 					request.setAttribute("Rolename","Professor");
 				
