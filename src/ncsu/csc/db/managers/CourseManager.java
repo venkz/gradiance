@@ -5,9 +5,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.driver.OracleTypes;
 import ncsu.csc.db.beans.Enrollments;
+import ncsu.csc.db.beans.HWRecords;
 import ncsu.csc.db.models.DBConnector;
 
 public class CourseManager {
@@ -53,10 +55,36 @@ Connection con;
 				arr_enroll.add(enr);
 			}
 		}
-		
-
 		return arr_enroll;
 	}
 	
+	public ArrayList<HWRecords> getHomeworkRecords(String token, String username) throws SQLException
+	{
+		ArrayList<HWRecords> arr_hw = new ArrayList<HWRecords>();
+		HWRecords hw;	
+		
+		//************** Sql query to fetch courses ******************
+		
+		String preparedStatement = "{ CALL getPastSubmissionInfo(?,?,?) }";
+		CallableStatement cs = con.prepareCall(preparedStatement);
+		cs.setString(1, username);
+		cs.registerOutParameter(2,OracleTypes.CURSOR);
+		cs.setString(3, token);
+		cs.execute();
+		
+		ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
+		
+		// ***********************************************************
+		while (rs.next()) {
+			hw = new HWRecords();
+			hw.setHwId(rs.getInt("hwid"));
+			hw.setAttemptId(rs.getInt("attemptid"));
+			hw.setAttemptNumber(rs.getInt("attemptno"));
+			hw.setScore(rs.getInt("score"));
+			hw.setHwName(rs.getString("hwname"));
+			arr_hw.add(hw);
+		}
+		return arr_hw;
+	}
 	
 }

@@ -21,8 +21,8 @@ public class DBConnector {
 			if(con == null) {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				String url = "jdbc:oracle:thin:@ora.CSC.ncsu.edu:1521:orcl";
-				String user = "vkara";
-		        String password = "200023607";
+				String user = "skypa";
+		        String password = "200015089";
 		        String schemaName = "CSC540";
 				con = DriverManager.getConnection(url, user,password);
 				return con;
