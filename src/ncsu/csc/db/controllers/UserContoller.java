@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.Users;
+import ncsu.csc.db.managers.CourseManager;
 import ncsu.csc.db.managers.UsersManager;
 
 /**
@@ -87,6 +88,8 @@ public class UserContoller extends HttpServlet {
 				int created = userMan.enrollUser(enrollments);
 				if(created > 0) {
 					if(isUser == 0) {
+						CourseManager cm=new CourseManager();
+						request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString()));
 						RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
 						rd.forward(request, response);
 					}
@@ -97,16 +100,10 @@ public class UserContoller extends HttpServlet {
 					
 					return;
 				} else {
-					request.setAttribute("errormsg", "Unalbe to enroll user!");
-					if(isUser == 0) 
-						request.setAttribute("link", "LandingPage.jsp");
-					else {
-						request.setAttribute("link", "CreateUser.jsp");
-						request.setAttribute("text", "Go Back");
-						RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
-						rd.forward(request, response);
-						return;
-					}
+					request.setAttribute("errormsg", "Unable to enroll user!");
+					request.setAttribute("text", "Go Back");
+					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+					rd.forward(request, response);
 				}
 			}
 		} catch (ClassNotFoundException | SQLException e) {

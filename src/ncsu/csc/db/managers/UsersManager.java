@@ -5,7 +5,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
+import oracle.jdbc.OracleCallableStatement;
+import oracle.jdbc.driver.OracleTypes;
 import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.Users;
 import ncsu.csc.db.models.DBConnector;
@@ -53,12 +56,16 @@ public class UsersManager {
 	
 	public int enrollUser(Enrollments enrollments) {
 		try {
-			String preparedStatement = "{ CALL ENROLL_STUDENT(?,?,?) }";
+			String preparedStatement = "{ CALL ENROLL_STUDENT(?,?,?,?) }";
 			CallableStatement cs = con.prepareCall(preparedStatement);
 			cs.setString(1, enrollments.getUsername());
 			cs.setString(2, enrollments.getToken());
 			cs.setInt(3, enrollments.getIsta());
-			return cs.executeUpdate();
+			cs.registerOutParameter(4,Types.INTEGER);
+			cs.executeUpdate();
+			
+			int status = ((OracleCallableStatement)cs).getInt(4);
+			return status;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

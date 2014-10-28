@@ -31,7 +31,7 @@
 				    	<h3 class="panel-title">Add course</h3>
 				 	</div>
 				  		<div class="panel-body">
-				    	<form accept-charset="UTF-8" role="form" method="post" action="UserController">
+				    	<form accept-charset="UTF-8" role="form" method="post" action="UserContoller">
 	                    	<fieldset>
 					    	  	<div class="form-group">
 					    		    <input class="form-control" placeholder="Course Token" name="token"  id="token" type="text" required="required">

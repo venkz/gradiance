@@ -6,7 +6,9 @@
 			<br>
 			<br> <img alt="" src="images/404.jpg">
 			<br>
-			<a class="btn btn-lg btn-danger btn-block" href="${link}">${text}</a>
+			<%-- <a class="btn btn-lg btn-danger btn-block" href="${link}">${text}</a> --%>			
+			<a class="btn btn-lg btn-danger btn-block" onclick=window.history.back()>${text}</a>
+			
 		</div>
 	</div>
 </body>

@@ -58,7 +58,6 @@ public class LoginController extends HttpServlet {
 			
 			if(role == -1) {
 				request.setAttribute("errormsg", "Invalid login details!");
-				request.setAttribute("link", "Login.jsp");
 				request.setAttribute("text", "Try again");
 				RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
 				rd.forward(request, response);
