@@ -87,4 +87,32 @@ Connection con;
 		return arr_hw;
 	}
 	
+	public ArrayList<HWRecords> getNewHomeworks(String token, String username) throws SQLException
+	{
+		ArrayList<HWRecords> arr_hw = new ArrayList<HWRecords>();
+		HWRecords hw;	
+		
+		//************** Sql query to fetch courses ******************
+		
+		String preparedStatement = "{ CALL getValidAttemptHomework(?,?,?) }";
+		CallableStatement cs = con.prepareCall(preparedStatement);
+		cs.setString(1, username);
+		cs.registerOutParameter(2,OracleTypes.CURSOR);
+		cs.setString(3, token);
+		cs.execute();
+		
+		ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
+		
+		// ***********************************************************
+		while (rs.next()) {
+			hw = new HWRecords();
+			hw.setHwId(rs.getInt("hwid"));
+			hw.setHwName(rs.getString("hwname"));
+			hw.setMaxAttempts(rs.getInt("maxattempts"));
+			hw.setAttempsMade(rs.getInt("count"));
+			arr_hw.add(hw);
+		}
+		return arr_hw;
+	}
+	
 }

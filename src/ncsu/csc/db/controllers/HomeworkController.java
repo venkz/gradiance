@@ -32,11 +32,22 @@ public class HomeworkController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			String attemptId = request.getParameter("attemptId");
+			String hwId = request.getParameter("hwid");
 			HWManger hwm = new HWManger();
 			HttpSession session = request.getSession(false);
 			String username = session.getAttribute("Session_UserName").toString();
-			RequestDispatcher rd = request.getRequestDispatcher("HomeWork.jsp");
-			rd.forward(request, response);
+			
+			if(attemptId != null) {
+				// retrieve attempt
+				
+			} else if(hwId != null) {
+				// new attempt
+				
+				request.setAttribute("hwId", hwId);
+				request.setAttribute("quesNewList", hwm.generateNewAttempt(hwId, username));
+				RequestDispatcher rd = request.getRequestDispatcher("HomeworkNew.jsp");
+				rd.forward(request, response);
+			}
 	}
 
 	/**

@@ -1895,6 +1895,9 @@ pre code {
   .col-md-offset-1 {
     margin-left: 8.33333333%;
   }
+   .col-md-offset-0-5 {
+    margin-left: 2.33333333%;
+  }
   .col-md-offset-0 {
     margin-left: 0;
   }

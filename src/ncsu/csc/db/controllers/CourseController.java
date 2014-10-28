@@ -35,7 +35,8 @@ public class CourseController extends HttpServlet {
 			CourseManager cm = new CourseManager();
 			HttpSession session = request.getSession(false);
 			String username = session.getAttribute("Session_UserName").toString();
-			request.setAttribute("hwList", cm.getHomeworkRecords(token, username));
+			request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
+			request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
 			RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
 			rd.forward(request, response);
 		} catch (ClassNotFoundException | SQLException e) {

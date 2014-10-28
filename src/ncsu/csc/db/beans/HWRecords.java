@@ -8,6 +8,21 @@ public class HWRecords {
 	private int attemptNumber;
 	private int score;
 	
+	public int getMaxAttempts() {
+		return maxAttempts;
+	}
+	public void setMaxAttempts(int maxAttempts) {
+		this.maxAttempts = maxAttempts;
+	}
+	public int getAttempsMade() {
+		return attempsMade;
+	}
+	public void setAttempsMade(int attempsMade) {
+		this.attempsMade = attempsMade;
+	}
+	private int maxAttempts;
+	private int attempsMade;
+	
 	public String getHwName() {
 		return hwName;
 	}
