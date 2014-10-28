@@ -36,19 +36,14 @@ Connection con;
 		// ***********************************************************
 		
 		while(rs.next()!=false){
-			
 			enr=new Enrollments();
-			
 			if(rs.getInt("ta")==1)
 				enr.setIstaStr("TA");
 			else
 				enr.setIstaStr("Student");
-			
 			enr.setToken(rs.getString("token"));
 			enr.setCoursename(rs.getString("coursename"));
-			
 			arr_enroll.add(enr);
-			
 		}
 
 		return arr_enroll;

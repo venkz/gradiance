@@ -76,13 +76,16 @@ public class LoginController extends HttpServlet {
 				if(role==0)
 				{
 					session.setAttribute("Session_UserName", username);
+					session.setAttribute("Session_UserRole", role);
 					request.setAttribute("Rolename","Student");
 					CourseManager cm=new CourseManager();
 					request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString()));
 				}
-				else
+				else {
 					request.setAttribute("Rolename","Professor");
-				
+					session.setAttribute("Session_UserRole", role);
+				}
+					
 				RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
 				rd.forward(request, response);
 				return;
