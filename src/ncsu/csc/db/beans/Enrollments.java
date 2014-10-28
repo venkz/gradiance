@@ -26,10 +26,19 @@ public class Enrollments {
 	public void setIstaStr(String istaStr) {
 		this.istaStr = istaStr;
 	}
+
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	private String token;
 	private String coursename;
 	private int ista;
 	private String istaStr;
+	private String username;
 
 	
 	
