@@ -19,22 +19,18 @@
 <body>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
-	    <div class="navbar-inner">
-	    	<div class="col-lg-1"></div>
-		    <div class="col-lg-4">
-		    	<h4 style="color:white"> Welcome ${ Username } </h4>
-		    </div>
-		    <div class="col-lg-2"></div>
-	     	<div class="col-lg-4">
-		    	<h4 class="text-right" style="color:white" > Logged in as ${ Rolename } </h4>
-		    </div>
-		    <div class="col-lg-1"></div>
 	    
+	    <div class="navbar-inner" >
+		    <div class="col-lg-6">
+		    	<h4 style="color:white"><b> Welcome ${ Username } </b></h4>
+		    </div>
+	     	<div class="col-lg-6">
+		    	<h4 class="text-right" style="color:white" ><b> Logged in as ${ Rolename } </b></h4>
+		    </div>
 	    </div>
-	    
-	    
-	    
+
 	</div>
+	<br><br><br><br>
 	
 </body>
 </html>
