@@ -100,12 +100,13 @@ public class UserContoller extends HttpServlet {
 					request.setAttribute("errormsg", "Unalbe to enroll user!");
 					if(isUser == 0) 
 						request.setAttribute("link", "LandingPage.jsp");
-					else
+					else {
 						request.setAttribute("link", "CreateUser.jsp");
-					request.setAttribute("text", "Go Back");
-					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
-					rd.forward(request, response);
-					return;
+						request.setAttribute("text", "Go Back");
+						RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+						rd.forward(request, response);
+						return;
+					}
 				}
 			}
 		} catch (ClassNotFoundException | SQLException e) {

@@ -3,7 +3,6 @@ package ncsu.csc.db.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
-
-import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.Users;
 import ncsu.csc.db.managers.CourseManager;
 import ncsu.csc.db.managers.UsersManager;
@@ -56,7 +52,6 @@ public class LoginController extends HttpServlet {
 			Users users = new Users();
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			String Rolename;
 			users.setUserName(username);
 			users.setPassword(password);
 			int role = userMan.validateLogin(users);
@@ -85,10 +80,16 @@ public class LoginController extends HttpServlet {
 					request.setAttribute("Rolename","Professor");
 					session.setAttribute("Session_UserRole", role);
 				}
-					
-				RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
-				rd.forward(request, response);
-				return;
+				if(role == 0) {
+					RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
+					rd.forward(request, response);
+					return;
+				} else {
+					RequestDispatcher rd = request.getRequestDispatcher("CreateUser.jsp");
+					rd.forward(request, response);
+					return;	
+				}
+				
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
