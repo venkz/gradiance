@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import oracle.jdbc.OracleCallableStatement;
@@ -109,10 +110,27 @@ Connection con;
 			hw.setHwId(rs.getInt("hwid"));
 			hw.setHwName(rs.getString("hwname"));
 			hw.setMaxAttempts(rs.getInt("maxattempts"));
-			hw.setAttempsMade(rs.getInt("count"));
+			hw.setAttempsMade(getCountOfAttempts(username, hw.getHwId()));
 			arr_hw.add(hw);
 		}
 		return arr_hw;
+	}
+
+	private int getCountOfAttempts(String username, int hwId) {
+		String preparedStatement = "{ CALL getNoOfAttemptHomework(?,?,?) }";
+		CallableStatement cs;
+		try {
+			cs = con.prepareCall(preparedStatement);
+			cs.setString(1, username);
+			cs.registerOutParameter(2,Types.INTEGER);
+			cs.setInt(3, hwId);
+			cs.executeUpdate();
+			int status = ((OracleCallableStatement)cs).getInt(2);
+			return status;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
 }
