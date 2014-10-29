@@ -39,7 +39,13 @@ public class HomeworkController extends HttpServlet {
 			String username = session.getAttribute("Session_UserName").toString();
 			
 			if(attemptId != null) {
-				// retrieve attempt
+				// retrieve attempts
+				
+				request.setAttribute("token", token);		
+				request.setAttribute("quesCompletedList", hwm.getAttemptedHomewoks(attemptId, username));
+				RequestDispatcher rd = request.getRequestDispatcher("HomeworkCompleted.jsp");
+				rd.forward(request, response);
+				
 				
 			} else if(hwId != null) {
 				// new attempt

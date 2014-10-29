@@ -11,6 +11,49 @@ public class Question {
 	private String option4;
 	private int seqId;
 	
+	private int dueDatePassed;
+	private int answerChoosen;
+	private int isCorrect;
+	private String explanation;
+	private int correctOption;
+	private String fullExplanation;
+	
+	public int getDueDatePassed() {
+		return dueDatePassed;
+	}
+	public void setDueDatePassed(int dueDatePassed) {
+		this.dueDatePassed = dueDatePassed;
+	}
+	public int getAnswerChoosen() {
+		return answerChoosen;
+	}
+	public void setAnswerChoosen(int answerChoosen) {
+		this.answerChoosen = answerChoosen;
+	}
+	public int getIsCorrect() {
+		return isCorrect;
+	}
+	public void setIsCorrect(int isCorrect) {
+		this.isCorrect = isCorrect;
+	}
+	public String getExplanation() {
+		return explanation;
+	}
+	public void setExplanation(String explanation) {
+		this.explanation = explanation;
+	}
+	public int getCorrectOption() {
+		return correctOption;
+	}
+	public void setCorrectOption(int correctOption) {
+		this.correctOption = correctOption;
+	}
+	public String getFullExplanation() {
+		return fullExplanation;
+	}
+	public void setFullExplanation(String fullExplanation) {
+		this.fullExplanation = fullExplanation;
+	}
 	public int getQid() {
 		return qid;
 	}
