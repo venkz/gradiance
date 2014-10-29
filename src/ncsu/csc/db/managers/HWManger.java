@@ -4,13 +4,15 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
-import oracle.jdbc.OracleCallableStatement;
-import oracle.jdbc.driver.OracleTypes;
-import ncsu.csc.db.beans.HWRecords;
 import ncsu.csc.db.beans.Question;
 import ncsu.csc.db.models.DBConnector;
+import oracle.jdbc.OracleCallableStatement;
+import oracle.jdbc.driver.OracleTypes;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
 
 public class HWManger {
 
@@ -56,6 +58,28 @@ public class HWManger {
 			e.printStackTrace();
 		}
 		return arr_questions;
+	}
+	
+	public int saveNewAttempt(int attemptId, int[] questions, int[] answers) {
+		try {
+			String preparedStatement = "{ CALL submitAnswer(?,?,?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			
+			ArrayDescriptor desc = ArrayDescriptor.createDescriptor("ID_ARRAY", con);
+			ARRAY questionsArray = new ARRAY(desc, con, questions);
+			ARRAY answersArray = new ARRAY(desc, con, answers);
+			cs.setInt(1, attemptId);
+			cs.setArray(2, questionsArray);
+			cs.setArray(3, answersArray);
+			cs.registerOutParameter(4,Types.INTEGER);
+			cs.executeUpdate();
+			
+			int status = ((OracleCallableStatement)cs).getInt(4);
+			return status;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
 	

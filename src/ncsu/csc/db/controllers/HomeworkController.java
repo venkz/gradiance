@@ -33,6 +33,7 @@ public class HomeworkController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			String attemptId = request.getParameter("attemptId");
 			String hwId = request.getParameter("hwid");
+			String token = request.getParameter("token");
 			HWManger hwm = new HWManger();
 			HttpSession session = request.getSession(false);
 			String username = session.getAttribute("Session_UserName").toString();
@@ -44,6 +45,7 @@ public class HomeworkController extends HttpServlet {
 				// new attempt
 				
 				request.setAttribute("hwId", hwId);
+				request.setAttribute("token", token);
 				request.setAttribute("quesNewList", hwm.generateNewAttempt(hwId, username));
 				RequestDispatcher rd = request.getRequestDispatcher("HomeworkNew.jsp");
 				rd.forward(request, response);
@@ -54,7 +56,33 @@ public class HomeworkController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		int count = Integer.parseInt(request.getParameter("count"));
+		int attemptId = Integer.parseInt(request.getParameter("attemptId"));
+		String token = request.getParameter("token");
+		int[] questions = new int[count];
+		int[] answers = new int[count];;
+		for(int i = 0 ; i< count; i++) {
+			int k = i+1;
+			questions[i] = Integer.parseInt(request.getParameter(("ques")+k));
+			answers[i] = Integer.parseInt(request.getParameter(("ans")+k));
+		}
+		
+		HWManger hwm = new HWManger();
+		int result = hwm.saveNewAttempt(attemptId, questions, answers);
+		if(result > 0) {
+			request.setAttribute("token", token);
+			request.setAttribute("Referer", request.getRequestURI());
+			RequestDispatcher rd = request.getRequestDispatcher("CourseController");
+			rd.forward(request, response);
+			return;
+		} else {
+			request.setAttribute("errormsg", "Unable to save your answers at this time!");
+			request.setAttribute("text", "Try again");
+			RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+			rd.forward(request, response);
+			return;
+		}
 	}
 
 }

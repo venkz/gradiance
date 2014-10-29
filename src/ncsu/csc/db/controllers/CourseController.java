@@ -1,6 +1,7 @@
 package ncsu.csc.db.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -37,6 +38,7 @@ public class CourseController extends HttpServlet {
 			String username = session.getAttribute("Session_UserName").toString();
 			request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
 			request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
+			request.setAttribute("token", token);
 			RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
 			rd.forward(request, response);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -49,6 +51,9 @@ public class CourseController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		if(request.getAttribute("Referer").toString().contains("Homework")) {
+			doGet(request, response);
+		}
 	}
 
 }

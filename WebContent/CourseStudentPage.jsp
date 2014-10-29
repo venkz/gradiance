@@ -18,7 +18,7 @@
 						</div><hr>
 							<%for(HWRecords hw:arr_completed_hw){%>
 								<div class="row table table-striped text-center">
-									<div class="col-md-4 "><a href="HomeworkController?attemptId=<%=hw.getAttemptId()%>"><%=hw.getHwName()%></a></div>
+									<div class="col-md-4 "><a href="HomeworkController?token=${token}&attemptId=<%=hw.getAttemptId()%>"><%=hw.getHwName()%></a></div>
 									<div class="col-md-4 "><%=hw.getAttemptNumber()%></div>
 									<div class="col-md-4 "><%=hw.getScore()%></div>
 								</div>
@@ -41,7 +41,7 @@
 							<%for(HWRecords hw:arr_new_hw){%>
 								<%if(hw.getMaxAttempts() - hw.getAttempsMade() > 0) {%>
 									<div class="row table table-striped text-center">
-										<div class="col-md-4 "><a href="HomeworkController?hwid=<%=hw.getHwId()%>"><%=hw.getHwName()%></a></div>
+										<div class="col-md-4 "><a href="HomeworkController?token=${token}&hwid=<%=hw.getHwId()%>"><%=hw.getHwName()%></a></div>
 										<div class="col-md-4 "><%=(hw.getMaxAttempts() == 100)?"Unlimited":hw.getMaxAttempts()%></div>
 										<div class="col-md-4 "><%=hw.getAttempsMade()%></div>
 									</div>
