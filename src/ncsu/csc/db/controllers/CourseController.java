@@ -45,6 +45,7 @@ public class CourseController extends HttpServlet {
 				String token = request.getParameter("token");
 				request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
 				request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
+				request.setAttribute("token", token);
 				RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
 				rd.forward(request, response);
 			}
