@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import oracle.jdbc.OracleCallableStatement;
-import oracle.jdbc.driver.OracleTypes;
 import ncsu.csc.db.beans.HWRecords;
 import ncsu.csc.db.beans.Question;
 import ncsu.csc.db.models.DBConnector;
+import oracle.jdbc.OracleCallableStatement;
+import oracle.jdbc.driver.OracleTypes;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
 
 public class HWManger {
 
@@ -119,5 +121,67 @@ public class HWManger {
 		return 0;
 	}
 	
+	public int saveNewAttempt(int attemptId, int[] questions, int[] answers) {
+		try {
+			String preparedStatement = "{ CALL submitAnswer(?,?,?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			
+			ArrayDescriptor desc = ArrayDescriptor.createDescriptor("ID_ARRAY", con);
+			ARRAY questionsArray = new ARRAY(desc, con, questions);
+			ARRAY answersArray = new ARRAY(desc, con, answers);
+			cs.setInt(1, attemptId);
+			cs.setArray(2, questionsArray);
+			cs.setArray(3, answersArray);
+			cs.registerOutParameter(4,Types.INTEGER);
+			cs.executeUpdate();
+			
+			int status = ((OracleCallableStatement)cs).getInt(4);
+			return status;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
+	public ArrayList<Question> getAttemptedHomewoks(String attemptId, String username)
+	{
+		ArrayList<Question> arr_questions = new ArrayList<Question>();
+		Question ques;	
+		
+		//************** Sql query to fetch courses ******************
+		
+		String preparedStatement = "{ CALL ViewSubmissions(?,?) }";
+		CallableStatement cs;
+		try {
+			cs = con.prepareCall(preparedStatement);
+			cs.setString(1, attemptId);
+			cs.registerOutParameter(2,OracleTypes.CURSOR);
+			cs.execute();
+			
+			ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
+			int seq = 1;
+			// ***********************************************************
+			while (rs.next()) {
+				ques = new Question();
+				ques.setDueDatePassed(rs.getInt(1));
+				ques.setQid(rs.getInt("qid"));
+				ques.setText(rs.getString("qtext"));
+				ques.setOption1(rs.getString("option1"));
+				ques.setOption2(rs.getString("option2"));
+				ques.setOption3(rs.getString("option3"));
+				ques.setOption4(rs.getString("option4"));
+				ques.setSeqId(seq++);
+				ques.setAnswerChoosen(rs.getInt("choice"));
+				ques.setIsCorrect(rs.getInt("iscorrect"));
+				ques.setExplanation((rs.getString("explanation")));
+				ques.setCorrectOption(rs.getInt("correctoption"));
+				ques.setFullExplanation(rs.getString("fullexplanation"));
+				arr_questions.add(ques);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	return arr_questions;
+	}
 }

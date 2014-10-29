@@ -1,6 +1,7 @@
 package ncsu.csc.db.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -96,6 +97,9 @@ public class CourseController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		if(request.getAttribute("Referer").toString().contains("Homework")) {
+			doGet(request, response);
+		}
 	}
 
 }
