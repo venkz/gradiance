@@ -2,6 +2,9 @@ package ncsu.csc.db.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ncsu.csc.db.beans.HWRecords;
 import ncsu.csc.db.managers.CourseManager;
 import ncsu.csc.db.managers.HWManger;
 
@@ -62,33 +66,124 @@ public class HomeworkController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		int count = Integer.parseInt(request.getParameter("count"));
-		int attemptId = Integer.parseInt(request.getParameter("attemptId"));
-		String token = request.getParameter("token");
-		int[] questions = new int[count];
-		int[] answers = new int[count];;
-		for(int i = 0 ; i< count; i++) {
-			int k = i+1;
-			questions[i] = Integer.parseInt(request.getParameter(("ques")+k));
-			answers[i] = Integer.parseInt(request.getParameter(("ans")+k));
-		}
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(false);
+		int userrole = Integer.parseInt(session.getAttribute("Session_UserRole").toString());
+		String token = request.getParameter("cors_token");
+		String username = session.getAttribute("Session_UserName").toString();
 		
-		HWManger hwm = new HWManger();
-		int result = hwm.saveNewAttempt(attemptId, questions, answers);
-		if(result > 0) {
-			request.setAttribute("token", token);
-			request.setAttribute("Referer", request.getRequestURI());
-			RequestDispatcher rd = request.getRequestDispatcher("CourseController");
-			rd.forward(request, response);
-			return;
-		} else {
-			request.setAttribute("errormsg", "Unable to save your answers at this time!");
-			request.setAttribute("text", "Try again");
-			RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
-			rd.forward(request, response);
-			return;
+		if(userrole==0)
+		{
+			int count = Integer.parseInt(request.getParameter("count"));
+			int attemptId = Integer.parseInt(request.getParameter("attemptId"));
+			String token_student = request.getParameter("token");
+			int[] questions = new int[count];
+			int[] answers = new int[count];;
+			for(int i = 0 ; i< count; i++) {
+				int k = i+1;
+				questions[i] = Integer.parseInt(request.getParameter(("ques")+k));
+				answers[i] = Integer.parseInt(request.getParameter(("ans")+k));
+			}
+			
+			HWManger hwm = new HWManger();
+			int result = hwm.saveNewAttempt(attemptId, questions, answers);
+			if(result > 0) {
+				request.setAttribute("token", token_student);
+				request.setAttribute("Referer", request.getRequestURI());
+				RequestDispatcher rd = request.getRequestDispatcher("CourseController");
+				rd.forward(request, response);
+				return;
+			} else {
+				request.setAttribute("errormsg", "Unable to save your answers at this time!");
+				request.setAttribute("text", "Try again");
+				RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+				rd.forward(request, response);
+				return;
+			}
+			
 		}
+		else if(userrole==1)
+		{ 
+			//Code to add new homework ()
+			HWRecords hwr=new HWRecords();
+			HWManger hw=new HWManger();
+			int edit_status=Integer.parseInt(request.getParameter("updateHW"));
+			
+			
+				hwr.setHwName(request.getParameter("hwnameHidden"));
+				if(hwr.getHwName()==null)
+				{
+					hwr.setHwName(request.getParameter("hwname"));
+				}
+					
+				try {
+					
+					hwr.setStartdate(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(request.getParameter("startdate")));
+					hwr.setEnddate(new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(request.getParameter("enddate")));
+				
+				} catch (ParseException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				hwr.setNumattempts(Integer.parseInt(request.getParameter("numattempts")));
+				hwr.setTopics(request.getParameter("topics"));
+				hwr.setMindiffrange(Integer.parseInt(request.getParameter("mindiffrange")));
+				hwr.setMaxdiffrange(Integer.parseInt(request.getParameter("maxdiffrange")));
+				hwr.setScorescheme(Integer.parseInt(request.getParameter("scorescheme")));
+				hwr.setNumquestions(Integer.parseInt(request.getParameter("numquestions")));
+				hwr.setCorrectpoints(Integer.parseInt(request.getParameter("correctpoints")));
+				hwr.setIncorrectpoints(Integer.parseInt(request.getParameter("incorrectpoints")));
+				hwr.setRandomseed(Integer.parseInt(request.getParameter("randomseed")));
+				
+				int status=0;
+				
+				if(edit_status!=1)
+				{
+					status=hw.addNewHomeworkRecord(token, username,hwr);
+				}
+				else
+				{
+					status=hw.updateHomeworkRecord(token, username,hwr);
+				}
+				
+				if(status==-1)
+				{
+					request.setAttribute("errormsg", "Unable to add new Homework!");
+					request.setAttribute("text", "Go Back");
+					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+					rd.forward(request, response);
+				}
+				else
+				{
+					CourseManager cm = null;
+					try {
+						cm = new CourseManager();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(token, username));
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					request.setAttribute("coursetoken", token);
+					RequestDispatcher rd = request.getRequestDispatcher("CourseProfessorPage.jsp");
+					rd.forward(request, response);
+				}
+
+			}
+			else
+			{
+				
+				
+			}
+					
 	}
 
 }

@@ -2,6 +2,7 @@ package ncsu.csc.db.managers;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -59,6 +60,65 @@ public class HWManger {
 			e.printStackTrace();
 		}
 		return arr_questions;
+	}
+
+	public int addNewHomeworkRecord(String token, String username,	HWRecords hwr) {
+		// TODO Auto-generated method stub
+		try {
+			String preparedStatement = "{ CALL INSERT_HWRECORD(?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			cs.setString(1, hwr.getHwName());
+			cs.setString(2, token);
+			cs.setDate(3, new Date(hwr.getStartdate().getTime()));
+			cs.setDate(4, new Date(hwr.getEnddate().getTime()));
+			cs.setInt(5, hwr.getNumattempts());
+			cs.setString(6, hwr.getTopics());
+			cs.setInt(7, hwr.getMindiffrange());
+			cs.setInt(8, hwr.getMaxdiffrange());
+			cs.setInt(9, hwr.getScorescheme());
+			cs.setInt(10, hwr.getNumquestions());
+			cs.setInt(11, hwr.getCorrectpoints());
+			cs.setInt(12, hwr.getIncorrectpoints());
+			cs.setInt(13, hwr.getRandomseed());
+			
+			cs.registerOutParameter(14,Types.INTEGER);
+			cs.executeUpdate();
+			
+			int status = ((OracleCallableStatement)cs).getInt(14);
+			return status;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int updateHomeworkRecord(String token, String username, HWRecords hwr) {
+		try {
+			String preparedStatement = "{ CALL update_hwrecord(?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			cs.setString(1, hwr.getHwName());
+			cs.setString(2, token);
+			cs.setDate(3, new Date(hwr.getStartdate().getTime()));
+			cs.setDate(4, new Date(hwr.getEnddate().getTime()));
+			cs.setInt(5, hwr.getNumattempts());
+			cs.setString(6, hwr.getTopics());
+			cs.setInt(7, hwr.getMindiffrange());
+			cs.setInt(8, hwr.getMaxdiffrange());
+			cs.setInt(9, hwr.getScorescheme());
+			cs.setInt(10, hwr.getNumquestions());
+			cs.setInt(11, hwr.getCorrectpoints());
+			cs.setInt(12, hwr.getIncorrectpoints());
+			cs.setInt(13, hwr.getRandomseed());
+			
+			cs.registerOutParameter(14,Types.INTEGER);
+			cs.executeUpdate();
+			
+			int status = ((OracleCallableStatement)cs).getInt(14);
+			return status;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
 	public int saveNewAttempt(int attemptId, int[] questions, int[] answers) {
