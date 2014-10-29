@@ -2,9 +2,13 @@ package ncsu.csc.db.managers;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.driver.OracleTypes;
@@ -113,6 +117,77 @@ Connection con;
 			arr_hw.add(hw);
 		}
 		return arr_hw;
+	}
+	
+	public ArrayList<HWRecords> getAssignedHomeworkRecords(String token, String username) throws SQLException
+	{
+		ArrayList<HWRecords> arr_hw = new ArrayList<HWRecords>();
+		HWRecords hw;	
+		
+		//************** Sql query to fetch assigned Homeworks in a particular course ******************
+		
+		String preparedStatement = "{ CALL viewhomeworks(?,?,?) }";
+		CallableStatement cs = con.prepareCall(preparedStatement);
+		cs.setString(1, username);
+		cs.registerOutParameter(2,OracleTypes.CURSOR);
+		cs.setString(3, token);
+		cs.execute();
+		
+		ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
+		
+		// ***********************************************************
+		while (rs.next()) {
+			hw = new HWRecords();
+			hw.setHwId(rs.getInt("hwid"));
+			hw.setHwName(rs.getString("hwname"));
+			arr_hw.add(hw);
+		}
+		return arr_hw;
+		
+	}
+
+	public HWRecords getHomeworkParameters(String hwtoken) throws SQLException {
+		// TODO Auto-generated method stub
+		HWRecords hwr = null;	
+		String preparedStatement = "{ CALL get_hw_details(?,?) }";
+		CallableStatement cs = con.prepareCall(preparedStatement);
+		cs.setString(1, hwtoken);
+		cs.registerOutParameter(2,OracleTypes.CURSOR);
+		cs.execute();
+		
+		ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
+		
+		// ***********************************************************
+		if(rs.next()) {
+			
+			hwr = new HWRecords();
+			hwr.setHwName(rs.getString("hwname"));
+
+			try {
+				
+				hwr.setStartdate(new SimpleDateFormat("MM/dd/yyyy").parse(rs.getString("stdate")));
+				hwr.setEnddate(new SimpleDateFormat("MM/dd/yyyy").parse(rs.getString("endate")));
+			
+			} catch (ParseException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			hwr.setNumattempts(Integer.parseInt(rs.getString("maxattempts")));
+			hwr.setTopics(rs.getString("topic"));
+			hwr.setMindiffrange(Integer.parseInt(rs.getString("mindiff")));
+			hwr.setMaxdiffrange(Integer.parseInt(rs.getString("maxdiff")));
+			hwr.setScorescheme(Integer.parseInt(rs.getString("scoremethod")));
+			hwr.setNumquestions(Integer.parseInt(rs.getString("noofqsts")));
+			hwr.setCorrectpoints(Integer.parseInt(rs.getString("qpoints")));
+			hwr.setIncorrectpoints(Integer.parseInt(rs.getString("penaltypoints")));
+			hwr.setRandomseed(Integer.parseInt(rs.getString("randseed")));
+			
+			return hwr;
+	
+		}
+		return null;
+		
+		
 	}
 	
 }

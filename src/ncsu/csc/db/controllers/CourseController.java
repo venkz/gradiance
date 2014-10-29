@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ncsu.csc.db.beans.HWRecords;
 import ncsu.csc.db.managers.CourseManager;
 
 /**
@@ -31,14 +32,60 @@ public class CourseController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			String token = request.getParameter("token");
+			
+			
 			CourseManager cm = new CourseManager();
 			HttpSession session = request.getSession(false);
 			String username = session.getAttribute("Session_UserName").toString();
-			request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
-			request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
-			RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
-			rd.forward(request, response);
+			int userrole = Integer.parseInt(session.getAttribute("Session_UserRole").toString());
+			
+			if(userrole==0)
+			{
+				String token = request.getParameter("token");
+				request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
+				request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
+				RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
+				rd.forward(request, response);
+			}
+			else if(userrole==1)
+			{
+				
+				String action = request.getParameter("action");
+				
+				if(action==null){
+					
+					String coursetoken = request.getParameter("coursetoken");
+					request.setAttribute("coursetoken", coursetoken);
+					request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(coursetoken, username));
+					RequestDispatcher rd = request.getRequestDispatcher("CourseProfessorPage.jsp");
+					rd.forward(request, response);
+				}
+				else if(action.equalsIgnoreCase("Edit")){
+					
+					String hwtoken = request.getParameter("hwtoken");
+					String coursetoken= request.getParameter("coursetoken");
+					request.setAttribute("hwtoken", request.getParameter("hwtoken"));
+					request.setAttribute("coursetoken", request.getParameter("coursetoken"));
+					HWRecords hwr=cm.getHomeworkParameters(hwtoken);
+					if(hwr!=null)
+					{
+						request.setAttribute("coursetoken", coursetoken);
+						request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(coursetoken, username));
+						request.setAttribute("hwParameters", hwr);
+						
+						RequestDispatcher rd = request.getRequestDispatcher("CourseProfessorPage.jsp");
+						rd.forward(request, response);
+					}
+					else
+					{	
+						request.setAttribute("errormsg", "Unable to Retrive Homework!");
+						request.setAttribute("text", "Go Back");
+						RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+						rd.forward(request, response);
+					}
+				}
+				
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
