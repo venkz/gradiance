@@ -43,7 +43,7 @@ public class ModelJTable extends JFrame {
 	private DefaultTableModel model;
 	private JTable table;
 
-	public ModelJTable(ResultSet row) {
+	public ModelJTable(ResultSet row, String title) {
 		super();
 		model = new DefaultTableModel();
 		try {
@@ -53,10 +53,10 @@ public class ModelJTable extends JFrame {
 			
 			Container container = getContentPane();
 			container.add(new JScrollPane(table), BorderLayout.CENTER);
-			container.add(table.getTableHeader(), BorderLayout.NORTH);
+			setTitle(title);
 
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setSize(400, 300);
+			setSize(600, 400);
 			setVisible(true);
 		} catch (SQLException e) {
 			e.printStackTrace();

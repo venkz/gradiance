@@ -17,7 +17,7 @@
 					</div>
 
 					<div class="panel-body">
-						<form accept-charset="UTF-8" role="form" method="post" action="ReportsContoller">
+						<form accept-charset="UTF-8" role="form" method="post" action="ReportsController">
 							<fieldset>
 							
 							<div class="row">

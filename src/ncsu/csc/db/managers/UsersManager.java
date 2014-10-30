@@ -107,9 +107,6 @@ public class UsersManager {
 			ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
 			// ***********************************************************
 			
-			ModelJTable mdl = new ModelJTable(rs);
-			ModelJTable mdl2 = new ModelJTable(rs);
-			
 			while (rs.next()) {
 				notif = new Notifications();
 				notif.setId(rs.getInt("noteid"));
