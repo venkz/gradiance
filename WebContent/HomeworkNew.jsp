@@ -20,7 +20,7 @@
 								<div class="row table">
 									<div class="col-md-9 "><b><%=ques.getSeqId()%>)&nbsp<%=ques.getText()%></b></div>
 									<div class="form-group col-md-3">
-			    		    			<input class="form-control" placeholder="answer choice" name="ans<%=ques.getSeqId()%>"  id="ans<%=ques.getSeqId()%>" type="text" required="required">
+			    		    			<input class="form-control" placeholder="answer choice" name="ans<%=ques.getSeqId()%>"  id="ans<%=ques.getSeqId()%>" type="text">
 			    		    			<input class="form-control" name="ques<%=ques.getSeqId()%>"  id="ques<%=ques.getSeqId()%>" type="hidden" value="<%=ques.getQid()%>">
 			    					</div>
 								</div>

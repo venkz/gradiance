@@ -85,10 +85,10 @@ public class UserContoller extends HttpServlet {
 					enrollments.setIsta(Integer.parseInt(request.getParameter("ista")));
 				}
 				
-				int created = userMan.enrollUser(enrollments);
+				String created = userMan.enrollUser(enrollments);
 				CourseManager cm=new CourseManager();
 				request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString(), isUser));
-				if(created > 0) {
+				if(created.contains("Success")) {
 					if(isUser == 0) {
 						RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
 						rd.forward(request, response);
@@ -100,7 +100,7 @@ public class UserContoller extends HttpServlet {
 					
 					return;
 				} else {
-					request.setAttribute("errormsg", "Unable to enroll user!");
+					request.setAttribute("errormsg", created);
 					request.setAttribute("text", "Go Back");
 					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
 					rd.forward(request, response);

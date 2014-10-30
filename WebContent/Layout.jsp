@@ -21,19 +21,37 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 	    
 	    <div class="navbar-inner" >
-		    <div class="col-lg-6">
+		    <div class="col-lg-2">
 		    <% if(request.getRequestURI().contains("Login")) {%>
 		    </div>
 		    <%} else {%>
 		    	<%request.getSession(false);%>
 		    		<h4 style="color:white"><b> Welcome <%=session.getAttribute("Session_UserName")%> </b></h4>
 		    </div>
-	     	<div class="col-lg-6">
+		    
+	     	<div class="col-lg-3">
+	     	
 	     		<%if(Integer.parseInt(session.getAttribute("Session_UserRole").toString())==0){ %>
-	     			<h4 class="text-right" style="color:white" ><b> Logged in as Student </b></h4>
+	     			<h4 class="text" style="color:white" ><b> Logged in as Student </b></h4>
 	     		<% }else{%>
-	     			<h4 class="text-right" style="color:white" ><b> Logged in as Professor </b></h4>
+	     			<h4 class="text" style="color:white" ><b> Logged in as Professor </b></h4>
 	     		<%} %>
+	     	</div>
+	     	<div class="col-lg-3 text-right">
+	     		<form accept-charset="UTF-8" method="post" action="LoginController">
+                    <fieldset>
+			    		    <input class="form-control" name="notifications"  id="notifications" type="hidden" value="notifications">
+			    			<input class="btn btn-info" type="submit" value="Notifications">
+			    	</fieldset>
+			      	</form>
+	     	</div>	
+	     	<div class="col-lg-3 text-right">
+	     		<form accept-charset="UTF-8" method="post" action="LoginController">
+                    <fieldset>
+			    		    <input class="form-inline" name="logout"  id="logout" type="hidden" value="logout">
+			    			<input class="btn  btn-info" type="submit" value="Logout">
+			    	</fieldset>
+			      	</form>
 	     	</div>
 		    <%} %>
 	    </div>

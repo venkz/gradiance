@@ -3,6 +3,11 @@ package ncsu.csc.db.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,6 +44,29 @@ public class LoginController extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("Hello World venkz");
 	}
+	
+	private void redirector(int role, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		CourseManager cm;
+		try {
+			cm = new CourseManager();
+			request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString(), role));
+			if(role==0)
+			{
+				request.setAttribute("Rolename","Student");
+				RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
+				rd.forward(request, response);
+				return;
+			}
+			else {
+				request.setAttribute("Rolename","Professor");
+				RequestDispatcher rd = request.getRequestDispatcher("CreateUser.jsp");
+				rd.forward(request, response);
+				return;	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -47,45 +75,74 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		try {
-			UsersManager userMan = new UsersManager();
-			Users users = new Users();
-			String username = request.getParameter("username");
-			String password = request.getParameter("password");
-			users.setUserName(username);
-			users.setPassword(password);
-			int role = userMan.validateLogin(users);
+		String logout = request.getParameter("logout");
+		String notifications = request.getParameter("notifications");
+		String deleteNotif = request.getParameter("deleteNotif");
+		
+		if(logout != null) {
+			HttpSession session = request.getSession(false);
+			session.invalidate();
+			RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+			rd.forward(request, response);
+			return;	
 			
-			if(role == -1) {
-				request.setAttribute("errormsg", "Invalid login details!");
-				request.setAttribute("text", "Try again");
-				RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+		} else if (notifications != null) {
+			UsersManager um;
+			try {
+				um = new UsersManager();
+				HttpSession session = request.getSession(false);
+				request.setAttribute("notifications",um.GetNotifications(session.getAttribute("Session_UserName").toString()));
+				RequestDispatcher rd = request.getRequestDispatcher("Notifications.jsp");
 				rd.forward(request, response);
+				return;	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} else if (deleteNotif != null) {
+			UsersManager um;
+			try {
+				um = new UsersManager();
+				HttpSession session = request.getSession(false);
+				um.deleteNotifications(session.getAttribute("Session_UserName").toString());
+				int role = Integer.parseInt(session.getAttribute("Session_UserRole").toString());
+				redirector(role, request, response, session);
 				return;
-			} else {
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} else {
+			try {
+				UsersManager userMan = new UsersManager();
+				Users users = new Users();
+				String username = request.getParameter("username");
+				String password = request.getParameter("password");
+				users.setUserName	(username);
+				users.setPassword(password);
+				int role = userMan.validateLogin(users);
 				
-				HttpSession session = request.getSession();
-				request.setAttribute("Username", username);
-				session.setAttribute("Session_UserName", username);
-				session.setAttribute("Session_UserRole", role);
-				CourseManager cm=new CourseManager();
-				request.setAttribute("CourseList",cm.GetCourseList(session.getAttribute("Session_UserName").toString(), role));
-				if(role==0)
-				{
-					request.setAttribute("Rolename","Student");
-					RequestDispatcher rd = request.getRequestDispatcher("LandingPage.jsp");
+				if(role == -1) {
+					request.setAttribute("errormsg", "Invalid login details!");
+					request.setAttribute("text", "Try again");
+					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
 					rd.forward(request, response);
 					return;
+				} else {
+					
+					userMan.recordLogin(username);
+					
+					HttpSession session = request.getSession();
+					request.setAttribute("Username", username);
+					session.setAttribute("Session_UserName", username);
+					session.setAttribute("Session_UserRole", role);
+					
+					redirector(role, request, response, session);
+					return;
 				}
-				else {
-					request.setAttribute("Rolename","Professor");
-					RequestDispatcher rd = request.getRequestDispatcher("CreateUser.jsp");
-					rd.forward(request, response);
-					return;	
-				}
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
 		}
 	}
 

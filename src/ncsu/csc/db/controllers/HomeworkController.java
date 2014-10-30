@@ -82,7 +82,12 @@ public class HomeworkController extends HttpServlet {
 			for(int i = 0 ; i< count; i++) {
 				int k = i+1;
 				questions[i] = Integer.parseInt(request.getParameter(("ques")+k));
-				answers[i] = Integer.parseInt(request.getParameter(("ans")+k));
+				String ans = request.getParameter(("ans")+k);
+				if(ans == null || ans.length() < 1) {
+					answers[i] = -1;
+				} else {
+					answers[i] = Integer.parseInt(ans);
+				}
 			}
 			
 			HWManger hwm = new HWManger();
