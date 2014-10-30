@@ -184,4 +184,83 @@ public class HWManger {
 		
 	return arr_questions;
 	}
+	
+	public ArrayList<Question> getSearchQuestionsList(String searchStr,String hwname) throws SQLException
+	{
+		String preparedStatement = "{ CALL searchQuestions(?,?,?) }";
+		CallableStatement cs;
+		Question ques;
+		ArrayList<Question> search_questions = new ArrayList<Question>();
+		
+			cs = con.prepareCall(preparedStatement);
+			cs.setString(1, hwname);
+			cs.setString(2, searchStr);
+			cs.registerOutParameter(3,OracleTypes.CURSOR);
+			cs.execute();
+			
+			ResultSet rs = ((OracleCallableStatement)cs).getCursor(3);
+
+			while (rs.next()) {
+				ques = new Question();
+				ques.setQid(rs.getInt("qid"));
+				ques.setText(rs.getString("text"));
+				search_questions.add(ques);
+			}
+		return search_questions;
+	}
+
+	public int insertQuestionsToHw(int qid, String hwname) {
+		// TODO Auto-generated method stub
+		try {
+			String preparedStatement = "{ CALL addQuestionsToHomeworks(?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			
+			cs.setString(1, hwname);
+			cs.setInt(2, qid);
+			return cs.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+		
+	}
+
+	public ArrayList<Question> getQuestionsList(String hwname) throws SQLException {
+		// TODO Auto-generated method stub
+		Question ques;
+		ArrayList<Question> list_questions = new ArrayList<Question>();
+			String preparedStatement = "{ CALL viewQuestionsinHomeworks(?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			
+			cs.setString(1, hwname);
+			cs.registerOutParameter(2,OracleTypes.CURSOR);
+			cs.execute();
+			
+			ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
+			while (rs.next()) {
+				ques = new Question();
+				ques.setQid(rs.getInt("qid"));
+				ques.setText(rs.getString("text"));
+				list_questions.add(ques);
+			}
+		return list_questions;
+	}
+
+	public int deleteQuestionsFromHw(int qid, String hwname) {
+		// TODO Auto-generated method stub
+		try {
+			String preparedStatement = "{ CALL removeQuestionsFromHomeworks(?,?) }";
+			CallableStatement cs = con.prepareCall(preparedStatement);
+			
+			cs.setString(1, hwname);
+			cs.setInt(2, qid);
+			return cs.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 }

@@ -110,11 +110,15 @@ public class HomeworkController extends HttpServlet {
 		else if(userrole==1)
 		{ 
 			//Code to add new homework ()
+			
+			
+			
 			HWRecords hwr=new HWRecords();
 			HWManger hw=new HWManger();
-			int edit_status=Integer.parseInt(request.getParameter("updateHW"));
+			String hwaction=request.getParameter("hwaction");
 			
-			
+			if(hwaction.equalsIgnoreCase("addHw")||hwaction.equalsIgnoreCase("updateHw"))
+			{
 				hwr.setHwName(request.getParameter("hwnameHidden"));
 				if(hwr.getHwName()==null)
 				{
@@ -142,11 +146,11 @@ public class HomeworkController extends HttpServlet {
 				
 				int status=0;
 				
-				if(edit_status!=1)
+				if(hwaction.equalsIgnoreCase("addHw"))
 				{
 					status=hw.addNewHomeworkRecord(token, username,hwr);
 				}
-				else
+				else if(hwaction.equalsIgnoreCase("updateHw"))
 				{
 					status=hw.updateHomeworkRecord(token, username,hwr);
 				}
@@ -181,13 +185,111 @@ public class HomeworkController extends HttpServlet {
 					RequestDispatcher rd = request.getRequestDispatcher("CourseProfessorPage.jsp");
 					rd.forward(request, response);
 				}
-
 			}
-			else
+			else if(hwaction.equalsIgnoreCase("searchTopic"))
+			{
+				request.setAttribute("hwtoken",request.getParameter("hwtoken"));
+				try {
+					request.setAttribute("searchResults", hw.getSearchQuestionsList(request.getParameter("searchtopic"),request.getParameter("hwtoken")));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				request.setAttribute("qts_action","add");
+				request.setAttribute("hwtoken", request.getParameter("hwtoken"));
+				request.setAttribute("searchtopic",request.getParameter("searchtopic"));
+				request.setAttribute("coursetoken",request.getParameter("coursetoken"));
+				
+				RequestDispatcher rd = request.getRequestDispatcher("questionsView.jsp");
+				rd.forward(request, response);
+			}
+			
+			else if(hwaction.equalsIgnoreCase("add"))
 			{
 				
+					int status=hw.insertQuestionsToHw(Integer.parseInt(request.getParameter("qid")),request.getParameter("hwtoken"));
+					
+					if(status==-1)
+					{
+						request.setAttribute("errormsg", "Unable to add this question to Homework!");
+						request.setAttribute("text", "Go Back");
+						RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+						rd.forward(request, response);
+					}
+					else{
+						
+						try {
+						request.setAttribute("searchResults", hw.getSearchQuestionsList(request.getParameter("searchtopic"),request.getParameter("hwtoken")));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				
+				request.setAttribute("qts_action","add");
+				request.setAttribute("searchtopic",request.getParameter("searchtopic"));
+				request.setAttribute("hwtoken",request.getParameter("hwtoken"));
+				request.setAttribute("coursetoken",request.getParameter("coursetoken"));
+				RequestDispatcher rd = request.getRequestDispatcher("questionsView.jsp");
+				rd.forward(request, response);
+				}
+					
 			}
+			else if(hwaction.equalsIgnoreCase("delete"))
+			{
+				int status=hw.deleteQuestionsFromHw(Integer.parseInt(request.getParameter("qid")),request.getParameter("hwtoken"));
+				
+				if(status==-1)
+				{
+					request.setAttribute("errormsg", "Unable to add this question to Homework!");
+					request.setAttribute("text", "Go Back");
+					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+					rd.forward(request, response);
+				}
+				else{
+					
+					try {
+						request.setAttribute("searchResults", hw.getQuestionsList(request.getParameter("hwtoken")));
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			
+			request.setAttribute("qts_action","delete");
+			request.setAttribute("searchtopic",request.getParameter("searchtopic"));
+			request.setAttribute("hwtoken",request.getParameter("hwtoken"));
+			request.setAttribute("coursetoken",request.getParameter("coursetoken"));
+			RequestDispatcher rd = request.getRequestDispatcher("questionsView.jsp");
+			rd.forward(request, response);
+				}
+			}
+			
+			else if(hwaction.equalsIgnoreCase("finish"))
+			{
+				CourseManager cm = null;
+				try {
+					cm = new CourseManager();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(request.getParameter("coursetoken"), username));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				request.setAttribute("coursetoken", request.getParameter("coursetoken"));
+				RequestDispatcher rd = request.getRequestDispatcher("CourseProfessorPage.jsp");
+				rd.forward(request, response);
+			}
+			
+			
+			
+		}
 					
 	}
 

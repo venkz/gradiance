@@ -38,8 +38,8 @@
 									<div class="col-md-4"><%=hw.getHwName()%></div>
 									<div class="col-md-1"><a href="CourseController?coursetoken=<%=request.getAttribute("coursetoken")%>&hwtoken=<%= hw.getHwName()%>&action=Edit">Edit</a></div>
 									<div class="col-md-1"><a href="CourseController?coursetoken=<%=request.getAttribute("coursetoken")%>&hwtoken=<%= hw.getHwName()%>&action=View">View</a></div>
-									<div class="col-md-3"><a href="CourseController?coursetoken=<%=request.getAttribute("coursetoken")%>&hwtoken=<%= hw.getHwName()%>&action=AQ">Remove Questions</a></div>
-									<div class="col-md-3"><a href="CourseController?coursetoken=<%=request.getAttribute("coursetoken")%>&hwtoken=<%= hw.getHwName()%>&action=RQ">Add Questions</a></div>
+									<div class="col-md-3"><a href="CourseController?coursetoken=<%=request.getAttribute("coursetoken")%>&hwtoken=<%= hw.getHwName()%>&action=RQ">Remove Questions</a></div>
+									<div class="col-md-3"><a href="CourseController?coursetoken=<%=request.getAttribute("coursetoken")%>&hwtoken=<%= hw.getHwName()%>&action=AQ">Add Questions</a></div>
 					
 								</div>
 							<%}%>   
@@ -78,7 +78,7 @@
 					    		    <input class="form-control" placeholder="InCorrect answer points" name="incorrectpoints"  id="incorrectpoints" type="text" required="required">
 					    		    <input class="form-control" placeholder="Randomization seed" name="randomseed"  id="randomseed" type="text">
 					    		    <input name="cors_token" id="cors_token" type="hidden" value=<%=request.getAttribute("coursetoken")%>>
-					    			<input name="updateHW" id="updateHW" type="hidden" value=0>
+					    			<input name="hwaction" id="hwaction" type="hidden" value="addHw">
 					    		</div>
 				    			<input class="btn btn-lg btn-success btn-block" type="submit" value="Add HomeWork">
 				    		</fieldset>
@@ -99,7 +99,7 @@
 					    		    <input class="form-control" placeholder="InCorrect answer points" name="incorrectpoints"  id="incorrectpoints" type="text" value="<%=hwr.getIncorrectpoints() %>" required="required">
 					    		    <input class="form-control" placeholder="Randomization seed" name="randomseed"  id="randomseed" type="text" value="<%=hwr.getRandomseed() %>">
 					    			<input name="cors_token" id="cors_token" type="hidden" value="<%=request.getAttribute("coursetoken")%>">
-					    		    <input name="updateHW" id="updateHW" type="hidden" value=1>
+					    		    <input name="hwaction" id="hwaction" type="hidden" value="updateHw">
 					    		</div>
 				    			<input class="btn btn-lg btn-success btn-block" type="submit" value="Update HomeWork">
 				    		</fieldset>
