@@ -24,6 +24,12 @@
 							<%}%>   
 				 	   </div>
 					</div>
+					
+					<br><br><br>
+								<a href="Reports.jsp?token=${token}" class="btn btn-lg btn-success btn-block" >Reports</a>
+		
+    	</div>
+    	
     			</div>
 			</div>		
     	</div>
