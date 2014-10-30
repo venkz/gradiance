@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ncsu.csc.db.managers.ReportManager;
 
@@ -37,19 +38,34 @@ public class ReportsController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String homework = request.getParameter("homework");
 		String student = request.getParameter("student");
+		String token = request.getParameter("token");
 		
-		if((homework != null) && (student.length()<1)) {
+		if((homework.length()>1) && (student.length()<1)) {
 			
 			ReportManager rm = new ReportManager();
-			rm.generateReports(homework);
+			rm.generateReportsHWOnly(homework);
 			RequestDispatcher rd = request.getRequestDispatcher("Reports.jsp");
 			rd.forward(request, response);
 			return;	
 			
-		} else if ((homework.length()<1) && (student != null)) {
-			
+		} else if ((homework.length()<1) && (student.length()>1)) {
+			ReportManager rm = new ReportManager();
+			rm.generateReportsStudentOnly(token,student );
+			RequestDispatcher rd = request.getRequestDispatcher("Reports.jsp");
+			rd.forward(request, response);
+			return;	
+		} else if ((homework.length()>1) && (student.length()>1)){
+			ReportManager rm = new ReportManager();
+			rm.generateReportsForBoth(homework, student, token);
+			RequestDispatcher rd = request.getRequestDispatcher("Reports.jsp");
+			rd.forward(request, response);
+			return;	
 		} else {
-			
+			ReportManager rm = new ReportManager();
+			rm.generateFullReport(token);
+			RequestDispatcher rd = request.getRequestDispatcher("Reports.jsp");
+			rd.forward(request, response);
+			return;	
 		}
 		
 		

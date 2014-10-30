@@ -22,10 +22,6 @@
 				</div>
 			</div>
 		</div>
-		<br><br><br>
-		<div class="row col-md-offset-1">
-								<a href="Reports.jsp" class="btn btn-lg btn-success btn-block" >Reports</a>
-		</div>	
 	</div>
 		<div class="col-md-6">
 			<div class="col-md-6 col-md-offset-2">

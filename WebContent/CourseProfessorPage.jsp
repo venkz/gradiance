@@ -45,7 +45,12 @@
 							<%}%>   
 				 	   </div>
 					</div>
+		
+		<br><br><br>
+								<a href="Reports.jsp?token=${coursetoken}" class="btn btn-lg btn-success btn-block" >Reports</a>
+		
     	</div>
+    	
     	<div class="col-lg-6">
 	    		<div class="panel panel-default">
 				  	<div class="panel-heading center">
