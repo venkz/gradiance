@@ -49,7 +49,7 @@ public class HWManger {
 					ques = new Question();
 					ques.setQid(rs.getInt("qid"));
 					ques.setAttemptId(rs.getInt("attemptId"));
-					ques.setText(rs.getString("qtext"));
+					ques.setText(rs.getString("qtext").replaceAll("[<>]", "@"));
 					ques.setSeqId(seq++);
 					ques.setOption1(rs.getString("option1"));
 					ques.setOption2(rs.getString("option2"));

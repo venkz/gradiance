@@ -31,7 +31,10 @@
 							
 							<br>
 								<input name="func" id="func" type="hidden" value="addTA">
+								<input name="token" id="token" type="hidden" value="<%= request.getParameter("token")%>">
 								<div class="col-lg-9 form-group col-md-offset-1"><input class="btn btn-lg btn-success btn-block" type="submit" value="Generate"></div>
+								<br><br>
+								<div class="col-lg-9 form-group col-md-offset-1"><input class="btn btn-lg btn-success btn-block" type="submit" value="Generate Course Report"></div>
 							</fieldset>
 						</form>
 					</div>

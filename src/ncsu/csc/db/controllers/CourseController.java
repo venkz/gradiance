@@ -45,7 +45,8 @@ public class CourseController extends HttpServlet {
 			if(userrole==0)
 			{
 				String token = request.getParameter("token");
-				if(request.getParameter("isTA").equalsIgnoreCase("TA"))
+				String isTA = request.getParameter("isTA");
+				if((isTA != null ) && isTA.equalsIgnoreCase("TA"))
 				{
 
 					if(request.getParameter("action").equalsIgnoreCase("View")){
