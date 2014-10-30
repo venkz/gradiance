@@ -55,14 +55,23 @@
 						<%}else{%>
 							<form accept-charset="UTF-8" role="form" method="post" action="HomeworkController">
 								<input name="hwaction" id="hwaction" type="hidden" value="finish">
-								<input name="coursetoken" id="coursetoken" type="hidden" value="<%=request.getAttribute("coursetoken")%>">
-								<input class="btn btn-default btn-success btn-block" type="submit" value="Done"> 
+								<%if(!request.getAttribute("isTA").toString().equalsIgnoreCase("TA")){%>
+									<input name="coursetoken" id="coursetoken" type="hidden" value="<%=request.getAttribute("coursetoken")%>">
+									<input name="isTA" id="isTA" type="hidden" value="<%=request.getAttribute("isTA")%>">
+									<input class="btn btn-default btn-success btn-block" type="submit" value="Done">
+								<%}else{ %>
+									<input name="coursetoken" id="coursetoken" type="hidden" value="<%=request.getAttribute("token")%>">
+									<input name="isTA" id="isTA" type="hidden" value="<%=request.getAttribute("isTA")%>">
+									<input class="btn btn-default btn-success btn-block" onclick=window.history.back() value="Done">
+								<%} %>
+								 
 							</form>
 						<%} %>
 						  
 				 	   </div>
 					</div>
 			</div>
+			<%if(request.getAttribute("qts_action").toString().equalsIgnoreCase("view")){%>
 			<div class="col-lg-4">
 					<div class="panel panel-default">
 				  	<div class="panel-heading center">
@@ -98,6 +107,7 @@
 			
 			</div>
     	</div>
+    	<%} %>
     </div>
  </div>
  </div>

@@ -45,11 +45,55 @@ public class CourseController extends HttpServlet {
 			if(userrole==0)
 			{
 				String token = request.getParameter("token");
-				request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
-				request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
-				request.setAttribute("token", token);
-				RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
-				rd.forward(request, response);
+				if(request.getParameter("isTA").equalsIgnoreCase("TA"))
+				{
+
+					if(request.getParameter("action").equalsIgnoreCase("View")){
+						
+						request.setAttribute("token", request.getParameter("token"));
+						request.setAttribute("hwtoken", request.getParameter("hwtoken"));
+						request.setAttribute("searchResults", hw.getQuestionsList(request.getParameter("hwtoken")));
+						request.setAttribute("qts_action","view");
+						
+						HWRecords hwr=cm.getHomeworkParameters(request.getParameter("hwtoken"));
+						
+						if(hwr!=null)
+						{
+							request.setAttribute("token", request.getParameter("token"));
+							request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(request.getParameter("token"), username));
+							request.setAttribute("hwParameters", hwr);
+							request.setAttribute("isTA", request.getParameter("isTA"));
+							RequestDispatcher rd = request.getRequestDispatcher("questionsView.jsp");
+							rd.forward(request, response);
+						}
+						else
+						{	
+							request.setAttribute("errormsg", "Unable to Retrive Homework!");
+							request.setAttribute("text", "Go Back");
+							RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+							rd.forward(request, response);
+						}
+					}
+					else
+					{
+						
+						request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(token, username));
+						request.setAttribute("token", token);
+						request.setAttribute("isTA", request.getParameter("isTA"));
+						RequestDispatcher rd = request.getRequestDispatcher("courseTaPage.jsp");
+						rd.forward(request, response);
+						
+					}
+					
+					
+				}
+				else{
+					request.setAttribute("hwCompletedList", cm.getHomeworkRecords(token, username));
+					request.setAttribute("hwNewList", cm.getNewHomeworks(token, username));
+					request.setAttribute("token", token);
+					RequestDispatcher rd = request.getRequestDispatcher("CourseStudentPage.jsp");
+					rd.forward(request, response);
+				}
 			}
 			else if(userrole==1)
 			{
@@ -111,7 +155,7 @@ public class CourseController extends HttpServlet {
 						request.setAttribute("coursetoken", request.getParameter("coursetoken"));
 						request.setAttribute("hwAssignedList", cm.getAssignedHomeworkRecords(request.getParameter("coursetoken"), username));
 						request.setAttribute("hwParameters", hwr);
-						
+						request.setAttribute("isTA", "NOTA");
 						RequestDispatcher rd = request.getRequestDispatcher("questionsView.jsp");
 						rd.forward(request, response);
 					}
