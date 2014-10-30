@@ -41,6 +41,7 @@
 				 	 </div>
 				 	 <input type="hidden" name="count" id="count" value="<%=arr_completed_ques.size()%>">
 				 	 <input type="hidden" name="token" id="token" value="${token }">
+				 	 <input type="hidden" name="isTA" id="isTA" value="${isTA }">
 				 	 <input type="hidden" name="attemptId" id="attemptId" value="<%=arr_completed_ques.get(0).getAttemptId()%>">
 				 	 <input class="btn btn-lg btn-success btn-block" type="submit" value="Submit Answers">
 			    	</fieldset>

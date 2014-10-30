@@ -74,7 +74,7 @@
 			<div class="col-md-6 col-md-offset-2">
 				<div class="panel panel-default">
 					<div class="panel-heading center">
-						<h3 class="panel-title text-center"><b>Add User as TA</b></h3>
+						<h3 class="panel-title text-center"><b>Add User/TA to course</b></h3>
 					</div>
 					<div class="panel-body">
 						<form accept-charset="UTF-8" role="form" method="post"

@@ -61,6 +61,7 @@ public class HomeworkController extends HttpServlet {
 				ArrayList<Question> questionList = hwm.generateNewAttempt(hwId, username);
 				if(questionList != null) {
 					request.setAttribute("quesNewList", questionList);
+					request.setAttribute("isTA", "NOTA");
 					RequestDispatcher rd = request.getRequestDispatcher("HomeworkNew.jsp");
 					rd.forward(request, response);
 				} else {

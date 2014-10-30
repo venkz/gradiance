@@ -43,6 +43,8 @@ public class UserContoller extends HttpServlet {
 		try {
 			UsersManager userMan = new UsersManager();
 			String method = request.getParameter("func");
+			HttpSession session1=request.getSession(false);
+			CourseManager cm1;
 			
 			if(method.equalsIgnoreCase("addUser")) {
 				Users users = new Users();
@@ -54,6 +56,9 @@ public class UserContoller extends HttpServlet {
 				users.setDegree(Integer.parseInt(request.getParameter("degree")));
 				int created = userMan.insertUser(users);
 				if(created > 0) {
+					cm1 = new CourseManager();
+					request.setAttribute("CourseList",cm1.GetCourseList(session1.getAttribute("Session_UserName").toString(), Integer.parseInt(session1.getAttribute("Session_UserRole").toString())));
+
 					RequestDispatcher rd = request.getRequestDispatcher("CreateUser.jsp");
 					rd.forward(request, response);
 					return;

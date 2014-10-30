@@ -40,5 +40,27 @@ public class ReportManager {
 		}
 		
 	}
+	public void generateQuestionChoices(int qid) {
+		
+		String preparedStatement = "{ CALL get_answer_choices(?,?) }";
+		CallableStatement cs;
+		try {
+			cs = con.prepareCall(preparedStatement);
+			cs.setInt(1, qid);
+			cs.registerOutParameter(2,OracleTypes.CURSOR);
+			cs.execute();
+			
+			ResultSet rs1 = ((OracleCallableStatement)cs).getCursor(2);
+			
+			ModelJTable mdl = new ModelJTable(rs1, "Choices");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 	
 }
