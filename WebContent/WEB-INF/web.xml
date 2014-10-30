@@ -29,6 +29,13 @@
 		<servlet-name>HomeworkController</servlet-name>
 		<servlet-class>ncsu.csc.db.controllers.HomeworkController</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>ReportsController</display-name>
+		<servlet-name>ReportsController</servlet-name>
+		<servlet-class>ncsu.csc.db.controllers.ReportsController</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>LoginController</servlet-name>
 		<url-pattern>/LoginController</url-pattern>
@@ -44,6 +51,10 @@
 	<servlet-mapping>
 		<servlet-name>HomeworkController</servlet-name>
 		<url-pattern>/HomeworkController</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ReportsController</servlet-name>
+		<url-pattern>/ReportsController</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

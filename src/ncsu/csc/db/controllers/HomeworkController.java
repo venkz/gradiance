@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ncsu.csc.db.beans.HWRecords;
+import ncsu.csc.db.beans.Question;
 import ncsu.csc.db.managers.CourseManager;
 import ncsu.csc.db.managers.HWManger;
 
@@ -56,9 +58,18 @@ public class HomeworkController extends HttpServlet {
 				
 				request.setAttribute("hwId", hwId);
 				request.setAttribute("token", token);
-				request.setAttribute("quesNewList", hwm.generateNewAttempt(hwId, username));
-				RequestDispatcher rd = request.getRequestDispatcher("HomeworkNew.jsp");
-				rd.forward(request, response);
+				ArrayList<Question> questionList = hwm.generateNewAttempt(hwId, username);
+				if(questionList != null) {
+					request.setAttribute("quesNewList", questionList);
+					RequestDispatcher rd = request.getRequestDispatcher("HomeworkNew.jsp");
+					rd.forward(request, response);
+				} else {
+					request.setAttribute("errormsg", "There are no questions for this homework. Enjoy!");
+					request.setAttribute("text", "Try again");
+					RequestDispatcher rd = request.getRequestDispatcher("Error.jsp");
+					rd.forward(request, response);
+					return;
+				}
 			}
 	}
 

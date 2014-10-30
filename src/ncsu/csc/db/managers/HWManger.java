@@ -31,30 +31,35 @@ public class HWManger {
 		
 		//************** Sql query to fetch courses ******************
 		
-		String preparedStatement = "{ CALL GENERATENEWATTEMPT(?,?,?) }";
+		String preparedStatement = "{ CALL GENERATENEWATTEMPT(?,?,?,?) }";
 		CallableStatement cs;
 		try {
 			cs = con.prepareCall(preparedStatement);
 			cs.setString(1, username);
 			cs.setString(2, hwId);
 			cs.registerOutParameter(3,OracleTypes.CURSOR);
+			cs.registerOutParameter(4,Types.INTEGER);
 			cs.execute();
-			
-			ResultSet rs = ((OracleCallableStatement)cs).getCursor(3);
-			int seq = 1;
-			// ***********************************************************
-			while (rs.next()) {
-				ques = new Question();
-				ques.setQid(rs.getInt("qid"));
-				ques.setAttemptId(rs.getInt("attemptId"));
-				ques.setText(rs.getString("qtext"));
-				ques.setSeqId(seq++);
-				ques.setOption1(rs.getString("option1"));
-				ques.setOption2(rs.getString("option2"));
-				ques.setOption3(rs.getString("option3"));
-				ques.setOption4(rs.getString("option4"));
-				
-				arr_questions.add(ques);
+			int status = ((OracleCallableStatement)cs).getInt(4);
+			if(status == 1) {
+				ResultSet rs = ((OracleCallableStatement)cs).getCursor(3);
+				int seq = 1;
+				// ***********************************************************
+				while (rs.next()) {
+					ques = new Question();
+					ques.setQid(rs.getInt("qid"));
+					ques.setAttemptId(rs.getInt("attemptId"));
+					ques.setText(rs.getString("qtext"));
+					ques.setSeqId(seq++);
+					ques.setOption1(rs.getString("option1"));
+					ques.setOption2(rs.getString("option2"));
+					ques.setOption3(rs.getString("option3"));
+					ques.setOption4(rs.getString("option4"));
+					
+					arr_questions.add(ques);
+				}
+			} else {
+				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

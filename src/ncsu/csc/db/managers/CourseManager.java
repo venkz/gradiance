@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import ncsu.csc.db.beans.Enrollments;
 import ncsu.csc.db.beans.HWRecords;
+import ncsu.csc.db.beans.ModelJTable;
 import ncsu.csc.db.models.DBConnector;
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.driver.OracleTypes;

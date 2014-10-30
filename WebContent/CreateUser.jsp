@@ -5,9 +5,10 @@
 
 	<div class="row">
 	<div class="col-lg-6">
+		<div class="row">
 			<div class="panel panel-default col-md-offset-1">
 				<div class="panel-heading center">
-					<h3 class="panel-title">Available Courses</h3>
+					<h3 class="panel-title text-center"><b>Available Courses</b></h3>
 				</div>
 				
 				<div class="panel-body">
@@ -21,11 +22,16 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-6">
+		<br><br><br>
+		<div class="row col-md-offset-1">
+								<a href="Reports.jsp" class="btn btn-lg btn-success btn-block" >Reports</a>
+		</div>	
+	</div>
+		<div class="col-md-6">
 			<div class="col-md-6 col-md-offset-2">
 				<div class="panel panel-default">
 					<div class="panel-heading center">
-						<h3 class="panel-title text-center">Create User</h3>
+						<h3 class="panel-title text-center"><b>Create User</b></h3>
 					</div>
 					<div class="panel-body">
 						<form accept-charset="UTF-8" role="form" method="post"
@@ -68,7 +74,7 @@
 			<div class="col-md-6 col-md-offset-2">
 				<div class="panel panel-default">
 					<div class="panel-heading center">
-						<h3 class="panel-title text-center">Add User as TA</h3>
+						<h3 class="panel-title text-center"><b>Add User as TA</b></h3>
 					</div>
 					<div class="panel-body">
 						<form accept-charset="UTF-8" role="form" method="post"

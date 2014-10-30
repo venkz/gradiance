@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import com.sun.nio.sctp.Notification;
 
 import ncsu.csc.db.beans.Enrollments;
+import ncsu.csc.db.beans.ModelJTable;
 import ncsu.csc.db.beans.Notifications;
 import ncsu.csc.db.beans.Question;
 import ncsu.csc.db.beans.Users;
@@ -105,6 +106,10 @@ public class UsersManager {
 			
 			ResultSet rs = ((OracleCallableStatement)cs).getCursor(2);
 			// ***********************************************************
+			
+			ModelJTable mdl = new ModelJTable(rs);
+			ModelJTable mdl2 = new ModelJTable(rs);
+			
 			while (rs.next()) {
 				notif = new Notifications();
 				notif.setId(rs.getInt("noteid"));
