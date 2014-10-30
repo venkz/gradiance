@@ -20,7 +20,7 @@ public class ReportManager {
 
 	public void generateReportsHWOnly(String hwName) {
 		
-		String preparedStatement = "{ CALL createReportsforHomework(?,?,?,?,?,?,?) }";
+		String preparedStatement = "{ CALL createReportsforHomework(?,?,?,?,?,?,?,?) }";
 		CallableStatement cs;
 		try {
 			cs = con.prepareCall(preparedStatement);
@@ -31,6 +31,7 @@ public class ReportManager {
 			cs.registerOutParameter(5,OracleTypes.CURSOR);
 			cs.registerOutParameter(6,OracleTypes.CURSOR);
 			cs.registerOutParameter(7,OracleTypes.CURSOR);
+			cs.registerOutParameter(8,OracleTypes.CURSOR);
 			cs.execute();
 			
 			ResultSet rs1 = ((OracleCallableStatement)cs).getCursor(2);
@@ -39,6 +40,7 @@ public class ReportManager {
 			ResultSet rs4 = ((OracleCallableStatement)cs).getCursor(5);
 			ResultSet rs5 = ((OracleCallableStatement)cs).getCursor(6);
 			ResultSet rs6 = ((OracleCallableStatement)cs).getCursor(7);
+			ResultSet rs7 = ((OracleCallableStatement)cs).getCursor(8);
 			
 			ModelJTable mdl = new ModelJTable(rs1, "Defaulters for "+hwName);
 			ModelJTable mdl2 = new ModelJTable(rs2, "Students scoring max in attemp #1 for "+hwName);
@@ -46,6 +48,7 @@ public class ReportManager {
 			ModelJTable mdl4 = new ModelJTable(rs4, "Max and Min for a Question on each attempt in "+hwName);
 			ModelJTable mdl5 = new ModelJTable(rs5, "Correct attempts for a question in "+hwName);
 			ModelJTable mdl6 = new ModelJTable(rs6, "Incorrect attempts for a quesion in "+hwName);
+			ModelJTable mdl7 = new ModelJTable(rs7, "Average of attempts for "+hwName);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
